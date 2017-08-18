@@ -15,6 +15,7 @@ const argv = yargs
   .argv;
 
 console.log(argv);
+console.log("just testing github.");
 
 request({
   url: 'https://maps.googleapis.com/maps/api/geocode/json?address=sqs%20204%20bloco%20b%20bras%C3%ADlia',
