@@ -1,6 +1,7 @@
-// const _ = require('lodash');
+const _ = require('lodash');
 const yargs = require('yargs');
 const geocode = require('./geocode/geocode.js');
+const weather = require('./weather/weather.js');
 
 const argv = yargs
   .options({
@@ -14,11 +15,23 @@ const argv = yargs
   .help()
   .argv;
 
+var lat;
+var long;
+
 //console.log(argv);
-geocode.geocodeAddress(argv.a, (errorMessage,results) => {
-  if (errorMessage){
-    console.log(errorMessage);
-  } else {
-    console.log(JSON.stringify(results,undefined,2));
-  }
-});
+ geocode.geocodeAddress(argv.a, (errorMessageAddress,results1) => {
+   if (errorMessageAddress){
+     console.log(errorMessageAddress);
+   } else {
+     weather.getWeather(results1.lat, results1.lng,(errorMessageTemp,results2) => {
+        if (errorMessageTemp){
+          console.log(errorMessageTemp);
+        } else {
+          console.log(`It's ${results2.actualTemp} Celsius, but it appears to be ${results2.apparentTemp} in ${results1.address}`);
+          //console.log(JSON.stringify(results1,undefined,2));
+          //console.log(JSON.stringify(results2,undefined,2));
+        }
+     });
+     //console.log(JSON.stringify(results,undefined,2));
+   }
+ });
